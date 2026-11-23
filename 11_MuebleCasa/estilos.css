@@ -1,0 +1,266 @@
+/* Estilos propios MuebleCasa — Caso 11 IHM (Incluye soporte Modo Claro / Oscuro y Escalado) */
+:root {
+  --mc-primary: #4A2C16;
+  --mc-primary-dark: #341E0E;
+  --mc-accent: #D97706;
+  --mc-bg: #F6F5F0;
+  --mc-surface: #FFFFFF;
+  --mc-surface-soft: #EFECE6;
+  --mc-text: #18221D;
+  --mc-muted: #525B56;
+  --mc-border: #DFDBD2;
+  --mc-pill-active-bg: #EAE4D8;
+  --mc-pill-active-text: #4A2C16;
+}
+
+/* MODO OSCURO ACCESIBLE */
+body.mc-dark {
+  --mc-primary: #D99B52;
+  --mc-primary-dark: #E8B16D;
+  --mc-bg: #121513;
+  --mc-surface: #1B201D;
+  --mc-surface-soft: #252C28;
+  --mc-text: #F3F4F6;
+  --mc-muted: #B4BDB8;
+  --mc-border: #323B36;
+  --mc-pill-active-bg: #36291D;
+  --mc-pill-active-text: #F5C284;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--mc-bg);
+  color: var(--mc-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.text-secondary {
+  color: var(--mc-muted) !important;
+}
+
+.mc-header, .mc-footer {
+  background-color: var(--mc-surface);
+  border-color: var(--mc-border) !important;
+}
+
+.mc-logo-box {
+  width: 36px;
+  height: 36px;
+  background-color: #D97706;
+}
+
+.mc-brand-title {
+  color: var(--mc-text);
+  letter-spacing: -0.02em;
+}
+
+.mc-card {
+  background-color: var(--mc-surface);
+  color: var(--mc-text);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.9rem;
+}
+
+/* Navegación estilo pastilla con subrayado sutil */
+.nav-pills .nav-link {
+  color: var(--mc-text);
+  font-weight: 500;
+  min-height: 40px;
+  border-radius: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--mc-pill-active-bg);
+  color: var(--mc-pill-active-text);
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 var(--mc-primary);
+}
+
+.mc-badge-count {
+  background-color: #D97706;
+  color: #1F160D;
+}
+
+.mc-pill-demo {
+  background-color: var(--mc-surface-soft);
+  color: var(--mc-muted);
+  font-weight: 600;
+  border: 1px solid var(--mc-border);
+}
+
+.mc-btn-tool {
+  background-color: var(--mc-surface);
+  color: var(--mc-text);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.65rem;
+  font-weight: 600;
+}
+
+.mc-btn-tool:hover {
+  background-color: var(--mc-surface-soft);
+  color: var(--mc-text);
+}
+
+.mc-aa-icon {
+  display: inline-block;
+  border: 1.5px solid currentColor;
+  border-radius: 0.3rem;
+  padding: 0 0.25rem;
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.mc-btn-access {
+  background: transparent;
+  color: var(--mc-text);
+  border: none;
+  font-weight: 600;
+}
+
+.mc-btn-access:hover {
+  color: var(--mc-primary);
+}
+
+/* Botones principales */
+.mc-btn-primary {
+  background-color: #4A2C16;
+  border-color: #4A2C16;
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 0.65rem;
+}
+
+.mc-btn-primary:hover,
+.mc-btn-primary:focus {
+  background-color: #341E0E;
+  border-color: #341E0E;
+  color: #FFFFFF;
+}
+
+.mc-btn-amber {
+  background-color: #F59E0B;
+  border-color: #F59E0B;
+  color: #1F160D;
+  border-radius: 0.7rem;
+}
+
+.mc-btn-amber:hover {
+  background-color: #D97706;
+  border-color: #D97706;
+  color: #1F160D;
+}
+
+.mc-btn-choose {
+  background-color: var(--mc-pill-active-bg);
+  color: var(--mc-pill-active-text);
+  border: 1px solid var(--mc-border);
+  font-weight: 600;
+  border-radius: 0.6rem;
+}
+
+.mc-btn-choose:hover {
+  background-color: #4A2C16;
+  color: #FFFFFF;
+}
+
+/* Hero Banner Inicio */
+.mc-hero {
+  background: linear-gradient(135deg, #2D1B0E 0%, #4A2C16 65%, #5C381D 100%);
+  border: 1px solid #3E2513;
+}
+
+.mc-hero-pill {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #FDE68A;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+}
+
+.mc-icon-tile {
+  width: 44px;
+  height: 44px;
+  background-color: var(--mc-pill-active-bg);
+  color: var(--mc-pill-active-text);
+  font-size: 1.2rem;
+}
+
+.mc-link-action {
+  color: var(--mc-primary);
+}
+
+/* Miniaturas ilustradas de muebles en catálogo */
+.mc-thumb-box {
+  width: 78px;
+  height: 78px;
+  background-color: var(--mc-surface-soft);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mc-pill-spec {
+  background-color: #FEF3C7;
+  color: #78350F;
+  border: 1px solid #FDE68A;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.spec-box {
+  background-color: var(--mc-surface-soft);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+/* Panel Accesibilidad */
+.mc-theme-option {
+  background-color: var(--mc-surface-soft);
+  color: var(--mc-text);
+  border: 1.5px solid var(--mc-border);
+  font-weight: 600;
+  border-radius: 0.65rem;
+}
+
+.mc-theme-option.active {
+  background-color: var(--mc-pill-active-bg);
+  border-color: var(--mc-primary);
+  color: var(--mc-pill-active-text);
+}
+
+/* Adaptación tablas y formularios en modo oscuro */
+body.mc-dark .form-control,
+body.mc-dark .form-select {
+  background-color: #252C28;
+  border-color: #3B4640;
+  color: #F3F4F6;
+}
+
+body.mc-dark .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: #F3F4F6;
+  --bs-table-border-color: #323B36;
+}
+
+.vista {
+  display: none;
+}
+
+.vista.activa {
+  display: block;
+}
+
+.btn, .form-control, .form-select {
+  min-height: 42px;
+}
