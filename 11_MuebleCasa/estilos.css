@@ -1,4 +1,4 @@
-/* Estilos propios MuebleCasa — Caso 11 IHM (Incluye soporte Modo Claro / Oscuro y Escalado) */
+/* Estilos propios MuebleCasa — Caso 11 IHM */
 :root {
   --mc-primary: #4A2C16;
   --mc-primary-dark: #341E0E;
@@ -13,7 +13,6 @@
   --mc-pill-active-text: #4A2C16;
 }
 
-/* MODO OSCURO ACCESIBLE */
 body.mc-dark {
   --mc-primary: #D99B52;
   --mc-primary-dark: #E8B16D;
@@ -65,7 +64,6 @@ body {
   border-radius: 0.9rem;
 }
 
-/* Navegación estilo pastilla con subrayado sutil */
 .nav-pills .nav-link {
   color: var(--mc-text);
   font-weight: 500;
@@ -128,7 +126,6 @@ body {
   color: var(--mc-primary);
 }
 
-/* Botones principales */
 .mc-btn-primary {
   background-color: #4A2C16;
   border-color: #4A2C16;
@@ -170,7 +167,13 @@ body {
   color: #FFFFFF;
 }
 
-/* Hero Banner Inicio */
+/* Señal visual inmediata al agregar un mueble */
+.mc-btn-added {
+  background-color: #15803D !important;
+  border-color: #15803D !important;
+  color: #FFFFFF !important;
+}
+
 .mc-hero {
   background: linear-gradient(135deg, #2D1B0E 0%, #4A2C16 65%, #5C381D 100%);
   border: 1px solid #3E2513;
@@ -195,7 +198,6 @@ body {
   color: var(--mc-primary);
 }
 
-/* Miniaturas ilustradas de muebles en catálogo */
 .mc-thumb-box {
   width: 78px;
   height: 78px;
@@ -224,7 +226,6 @@ body {
   font-size: 0.85rem;
 }
 
-/* Panel Accesibilidad */
 .mc-theme-option {
   background-color: var(--mc-surface-soft);
   color: var(--mc-text);
@@ -239,18 +240,58 @@ body {
   color: var(--mc-pill-active-text);
 }
 
-/* Adaptación tablas y formularios en modo oscuro */
-body.mc-dark .form-control,
-body.mc-dark .form-select {
-  background-color: #252C28;
-  border-color: #3B4640;
-  color: #F3F4F6;
+/* MODO ICONOS GRANDES (BAJA VISIBILIDAD) */
+body.mc-large-icons .mc-ui-icon {
+  font-size: 1.35em;
+  display: inline-block;
+  transform: scale(1.22);
 }
 
-body.mc-dark .table {
-  --bs-table-bg: transparent;
-  --bs-table-color: #F3F4F6;
-  --bs-table-border-color: #323B36;
+body.mc-large-icons .mc-thumb-box svg {
+  width: 72px !important;
+  height: 72px !important;
+}
+
+body.mc-large-icons .mc-thumb-box {
+  width: 92px;
+  height: 92px;
+}
+
+body.mc-large-icons .mc-icon-tile {
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+}
+
+body.mc-large-icons .btn {
+  min-height: 48px;
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+body.mc-dark .form-control::placeholder {
+  color: #B8C2BD !important;
+  opacity: 1 !important;
+}
+
+body.mc-dark .form-control:focus,
+body.mc-dark .form-select:focus {
+  background-color: #2A322E;
+  color: #FFFFFF;
+  border-color: #E8B16D;
+  box-shadow: 0 0 0 0.25rem rgba(232, 177, 109, 0.25);
+}
+
+body.mc-dark .form-text {
+  color: #C7D0CC !important;
+}
+
+body.mc-dark code {
+  color: #FCD34D;
+}
+
+body.mc-dark .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
 }
 
 .vista {
