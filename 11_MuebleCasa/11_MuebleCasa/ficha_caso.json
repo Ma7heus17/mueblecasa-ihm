@@ -1,9 +1,0 @@
-{
-  "n": 11,
-  "sistema": "MuebleCasa",
-  "tipo": "Muebles",
-  "situacion": "Al seleccionar muebles importan medidas, material y espacio disponible; las pantallas iniciales no priorizan esa información.",
-  "usuario": "Personas que equipan hogares",
-  "tarea": "Seleccionar mueble, consultar medidas y registrar compra simulada.",
-  "condiciones": "Dimensiones, material y acabado"
-}
