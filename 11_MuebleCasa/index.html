@@ -19,7 +19,7 @@
         <!-- Marca -->
         <a href="#inicio" onclick="ver('inicio'); return false;" class="d-flex align-items-center gap-2 text-decoration-none">
           <span class="mc-logo-box d-inline-flex align-items-center justify-content-center rounded-3">
-            <img src="icons/icon.svg" alt="Logotipo de MuebleCasa" width="26" height="26">
+            <img src="icons/icon.svg" alt="Logotipo de MuebleCasa" width="26" height="26" class="mc-ui-icon">
           </span>
           <span class="h5 mb-0 fw-bold mc-brand-title">MuebleCasa</span>
         </a>
@@ -51,10 +51,10 @@
             <span class="mc-aa-icon me-1" aria-hidden="true">Aa</span> Accesibilidad
           </button>
           <button type="button" class="btn btn-sm mc-btn-tool" data-bs-toggle="modal" data-bs-target="#modalAyuda" aria-label="Ayuda sobre la demostración">
-            <span aria-hidden="true">?</span> Ayuda
+            <span class="mc-ui-icon" aria-hidden="true">?</span> Ayuda
           </button>
           <button type="button" class="btn btn-sm mc-btn-access" onclick="ver('acceso')">
-            <span aria-hidden="true">&#128100;</span> <span id="textoMiAcceso">Mi acceso</span>
+            <span class="mc-ui-icon" aria-hidden="true">&#128100;</span> <span>Mi acceso</span>
           </button>
           <button id="btnInstalarPWA" type="button" class="btn btn-sm btn-outline-dark d-none">Instalar app</button>
         </div>
@@ -72,10 +72,10 @@
           <h2 id="tituloAcceso" class="h2 fw-bold mb-1">Acceso al sistema</h2>
           <p class="text-secondary mb-4" id="subtituloAcceso">Perfil y acceso simulado en la demostración de MuebleCasa.</p>
 
-          <!-- ESTADO A: SESIÓN YA INICIADA (estilo tarjeta limpia) -->
+          <!-- ESTADO A: SESIÓN YA INICIADA -->
           <div class="card shadow-sm mc-card p-4 mb-3 d-none" id="perfilActivoCard">
             <h3 class="h5 fw-bold mb-1" id="perfilNombre">Usuario Demo</h3>
-            <p class="text-secondary mb-4" id="perfilCorreo">usuario@mueblecasa.demo</p>
+            <p class="text-secondary mb-4" id="perfilCorreo">user@correo.com</p>
             <div class="d-flex flex-wrap gap-2">
               <button type="button" class="btn mc-btn-primary px-4" onclick="ver('inicio')">Ir a Inicio &rarr;</button>
               <button type="button" class="btn btn-outline-secondary px-4" onclick="cerrarSesion()">Cerrar sesión</button>
@@ -85,7 +85,7 @@
           <!-- ESTADO B: FORMULARIO LOGIN / REGISTRO -->
           <div id="formulariosAcceso">
             <div class="alert alert-info border-info-subtle mb-3" role="note">
-              <strong>Aviso de simulación:</strong> Este acceso y registro son ficticios para pruebas de usabilidad. Puedes crear una cuenta de prueba o usar <code>demo@mueblecasa.ec</code> / <code>1234</code>.
+              <strong>Aviso de simulación:</strong> Este acceso y registro son ficticios para pruebas de usabilidad. Ejemplo de correo: <code>user@correo.com</code> (clave de prueba de al menos 4 caracteres).
             </div>
 
             <!-- Iniciar sesión -->
@@ -95,13 +95,14 @@
                 <form id="formLogin" novalidate onsubmit="ingresar(event)">
                   <div class="mb-3">
                     <label for="correo" class="form-label fw-semibold">Correo electrónico</label>
-                    <input id="correo" type="email" class="form-control" placeholder="ejemplo@correo.com" required>
-                    <div class="invalid-feedback">Ingresa un correo electrónico con formato válido.</div>
+                    <input id="correo" type="email" class="form-control" placeholder="user@correo.com" required>
+                    <div class="form-text">Ejemplo válido: <code>user@correo.com</code></div>
+                    <div class="invalid-feedback" id="errorCorreoLogin">Ingresa un correo válido (ejemplo: user@correo.com).</div>
                   </div>
                   <div class="mb-3">
                     <label for="clave" class="form-label fw-semibold">Clave de prueba</label>
                     <input id="clave" type="password" class="form-control" placeholder="Mínimo 4 caracteres" required minlength="4">
-                    <div class="invalid-feedback">Ingresa una clave de al menos 4 caracteres.</div>
+                    <div class="invalid-feedback" id="errorClaveLogin">Este campo es obligatorio (mínimo 4 caracteres).</div>
                   </div>
                   <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn mc-btn-primary px-4">Entrar</button>
@@ -124,18 +125,19 @@
                   </div>
                   <div class="mb-3">
                     <label for="regCorreo" class="form-label fw-semibold">Correo electrónico</label>
-                    <input id="regCorreo" type="email" class="form-control" placeholder="valeria@correo.com" required>
-                    <div class="invalid-feedback">Ingresa un correo electrónico con formato válido.</div>
+                    <input id="regCorreo" type="email" class="form-control" placeholder="user@correo.com" required>
+                    <div class="form-text">Ejemplo válido: <code>user@correo.com</code></div>
+                    <div class="invalid-feedback">Ingresa un correo válido (ejemplo: user@correo.com).</div>
                   </div>
                   <div class="mb-3">
                     <label for="regClave" class="form-label fw-semibold">Clave de prueba</label>
                     <input id="regClave" type="password" class="form-control" placeholder="Mínimo 4 caracteres" required minlength="4">
-                    <div class="invalid-feedback">La clave debe tener al menos 4 caracteres.</div>
+                    <div class="invalid-feedback">La clave es obligatoria (mínimo 4 caracteres).</div>
                   </div>
                   <div class="mb-3">
                     <label for="regClave2" class="form-label fw-semibold">Confirmar clave</label>
                     <input id="regClave2" type="password" class="form-control" placeholder="Repite la clave" required minlength="4">
-                    <div class="invalid-feedback">Las claves no coinciden.</div>
+                    <div class="invalid-feedback">Debes confirmar y hacer coincidir la clave.</div>
                   </div>
                   <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn mc-btn-primary px-4">Guardar registro</button>
@@ -149,7 +151,7 @@
       </div>
     </section>
 
-    <!-- 2. VISTA INICIO (Hero banner + tarjetas de acceso rápido) -->
+    <!-- 2. VISTA INICIO -->
     <section id="inicio" class="vista" aria-labelledby="tituloInicio">
       <div class="mc-hero rounded-4 p-4 p-md-5 mb-4 shadow-sm position-relative overflow-hidden">
         <div class="row align-items-center g-4">
@@ -167,16 +169,13 @@
             </div>
           </div>
           <div class="col-12 col-lg-5 text-center position-relative" style="z-index: 1;">
-            <!-- Ilustración geométrica decorativa de plano y mobiliario -->
             <svg viewBox="0 0 320 230" class="w-100" style="max-width: 310px;" aria-hidden="true">
               <circle cx="170" cy="115" r="102" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="2"/>
               <circle cx="170" cy="115" r="78" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.22)" stroke-width="2" stroke-dasharray="6 6"/>
-              <!-- Sofá estilizado -->
               <rect x="85" y="102" width="170" height="44" rx="10" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.45)" stroke-width="2.5"/>
               <rect x="102" y="82" width="136" height="26" rx="8" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.45)" stroke-width="2.5"/>
               <line x1="105" y1="146" x2="105" y2="162" stroke="rgba(255,255,255,0.55)" stroke-width="3" stroke-linecap="round"/>
               <line x1="235" y1="146" x2="235" y2="162" stroke="rgba(255,255,255,0.55)" stroke-width="3" stroke-linecap="round"/>
-              <!-- Cotas de dimensión -->
               <line x1="85" y1="180" x2="255" y2="180" stroke="#F59E0B" stroke-width="2"/>
               <line x1="85" y1="174" x2="85" y2="186" stroke="#F59E0B" stroke-width="2"/>
               <line x1="255" y1="174" x2="255" y2="186" stroke="#F59E0B" stroke-width="2"/>
@@ -193,12 +192,12 @@
           <div class="card shadow-sm mc-card h-100 p-3">
             <div class="card-body d-flex align-items-start gap-3">
               <div class="mc-icon-tile rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" aria-hidden="true">
-                &#128722;
+                <span class="mc-ui-icon">&#128722;</span>
               </div>
               <div>
                 <h4 class="h5 fw-bold mb-1">Revisar venta</h4>
                 <p class="text-secondary small mb-2">
-                  Comprueba los muebles seleccionados, ajusta cantidades y calcula el total (<strong id="resumenInicioCarrito">0 artículos</strong>).
+                  Comprueba los muebles seleccionados, ajusta cantidades y calcula el total (<strong id="resumenInicioCarrito">0 artículo(s) en pedido</strong>).
                 </p>
                 <a href="#venta" onclick="ver('venta'); return false;" class="fw-bold text-decoration-none mc-link-action">
                   Abrir Venta &rarr;
@@ -212,12 +211,12 @@
           <div class="card shadow-sm mc-card h-100 p-3">
             <div class="card-body d-flex align-items-start gap-3">
               <div class="mc-icon-tile rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" aria-hidden="true">
-                &#128339;
+                <span class="mc-ui-icon">&#128339;</span>
               </div>
               <div>
                 <h4 class="h5 fw-bold mb-1">Operaciones registradas</h4>
                 <p class="text-secondary small mb-2">
-                  Consulta y verifica tus compras simuladas (<strong id="resumenInicioVentas">0 registros</strong>).
+                  Consulta y verifica tus compras simuladas (<strong id="resumenInicioVentas">0 operación(es) registrada(s)</strong>).
                 </p>
                 <a href="#historial" onclick="ver('historial'); return false;" class="fw-bold text-decoration-none mc-link-action">
                   Ver historial &rarr;
@@ -382,7 +381,7 @@
         </div>
         <div class="modal-body pt-2">
           <p class="text-secondary small mb-3">
-            Personaliza el tamaño del texto y los colores. Las preferencias se guardan en este navegador.
+            Personaliza el tamaño del texto, los íconos y los colores. Las preferencias se guardan en este navegador.
           </p>
           <hr>
           <h3 class="h6 fw-bold mb-2">Tamaño de la letra</h3>
@@ -393,6 +392,15 @@
           </div>
           <p class="text-secondary small mb-3">Ajustable entre 100 % y 150 %.</p>
           <button type="button" class="btn btn-outline-secondary btn-sm mb-3" onclick="restablecerTamanoTexto()">Restablecer tamaño de letra</button>
+
+          <hr>
+          <h3 class="h6 fw-bold mb-2">Iconos y controles táctiles</h3>
+          <div class="d-grid mb-3">
+            <button type="button" id="btnIconosGrandes" class="btn mc-theme-option text-start px-3" aria-pressed="false" onclick="alternarIconosGrandes()">
+              <span class="mc-ui-icon me-2" aria-hidden="true">&#128269;</span>
+              <strong>Iconos grandes</strong> <span class="small text-secondary ms-1">(baja visibilidad)</span>
+            </button>
+          </div>
 
           <hr>
           <h3 class="h6 fw-bold mb-2">Apariencia</h3>
@@ -427,7 +435,7 @@
         </div>
         <div class="modal-body small">
           <ol class="mb-3">
-            <li class="mb-1"><strong>Acceso simulado:</strong> Inicia sesión con cualquier correo válido y clave de 4 caracteres o crea una cuenta de prueba.</li>
+            <li class="mb-1"><strong>Acceso simulado:</strong> Usa por ejemplo <code>user@correo.com</code> y una clave de al menos 4 caracteres, o crea una cuenta de prueba.</li>
             <li class="mb-1"><strong>Productos y medidas:</strong> Filtra por material o acabado y revisa las dimensiones (cm) antes de agregar al pedido.</li>
             <li class="mb-1"><strong>Venta simulada:</strong> Ajusta cantidades (&ge; 1) y confirma para guardar el comprobante local.</li>
             <li><strong>Historial:</strong> Revisa todas las operaciones registradas en este navegador.</li>
