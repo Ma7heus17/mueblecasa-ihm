@@ -1,0 +1,307 @@
+/* Estilos propios MuebleCasa — Caso 11 IHM */
+:root {
+  --mc-primary: #4A2C16;
+  --mc-primary-dark: #341E0E;
+  --mc-accent: #D97706;
+  --mc-bg: #F6F5F0;
+  --mc-surface: #FFFFFF;
+  --mc-surface-soft: #EFECE6;
+  --mc-text: #18221D;
+  --mc-muted: #525B56;
+  --mc-border: #DFDBD2;
+  --mc-pill-active-bg: #EAE4D8;
+  --mc-pill-active-text: #4A2C16;
+}
+
+body.mc-dark {
+  --mc-primary: #D99B52;
+  --mc-primary-dark: #E8B16D;
+  --mc-bg: #121513;
+  --mc-surface: #1B201D;
+  --mc-surface-soft: #252C28;
+  --mc-text: #F3F4F6;
+  --mc-muted: #B4BDB8;
+  --mc-border: #323B36;
+  --mc-pill-active-bg: #36291D;
+  --mc-pill-active-text: #F5C284;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--mc-bg);
+  color: var(--mc-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.text-secondary {
+  color: var(--mc-muted) !important;
+}
+
+.mc-header, .mc-footer {
+  background-color: var(--mc-surface);
+  border-color: var(--mc-border) !important;
+}
+
+.mc-logo-box {
+  width: 36px;
+  height: 36px;
+  background-color: #D97706;
+}
+
+.mc-brand-title {
+  color: var(--mc-text);
+  letter-spacing: -0.02em;
+}
+
+.mc-card {
+  background-color: var(--mc-surface);
+  color: var(--mc-text);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.9rem;
+}
+
+.nav-pills .nav-link {
+  color: var(--mc-text);
+  font-weight: 500;
+  min-height: 40px;
+  border-radius: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--mc-pill-active-bg);
+  color: var(--mc-pill-active-text);
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 var(--mc-primary);
+}
+
+.mc-badge-count {
+  background-color: #D97706;
+  color: #1F160D;
+}
+
+.mc-pill-demo {
+  background-color: var(--mc-surface-soft);
+  color: var(--mc-muted);
+  font-weight: 600;
+  border: 1px solid var(--mc-border);
+}
+
+.mc-btn-tool {
+  background-color: var(--mc-surface);
+  color: var(--mc-text);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.65rem;
+  font-weight: 600;
+}
+
+.mc-btn-tool:hover {
+  background-color: var(--mc-surface-soft);
+  color: var(--mc-text);
+}
+
+.mc-aa-icon {
+  display: inline-block;
+  border: 1.5px solid currentColor;
+  border-radius: 0.3rem;
+  padding: 0 0.25rem;
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.mc-btn-access {
+  background: transparent;
+  color: var(--mc-text);
+  border: none;
+  font-weight: 600;
+}
+
+.mc-btn-access:hover {
+  color: var(--mc-primary);
+}
+
+.mc-btn-primary {
+  background-color: #4A2C16;
+  border-color: #4A2C16;
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 0.65rem;
+}
+
+.mc-btn-primary:hover,
+.mc-btn-primary:focus {
+  background-color: #341E0E;
+  border-color: #341E0E;
+  color: #FFFFFF;
+}
+
+.mc-btn-amber {
+  background-color: #F59E0B;
+  border-color: #F59E0B;
+  color: #1F160D;
+  border-radius: 0.7rem;
+}
+
+.mc-btn-amber:hover {
+  background-color: #D97706;
+  border-color: #D97706;
+  color: #1F160D;
+}
+
+.mc-btn-choose {
+  background-color: var(--mc-pill-active-bg);
+  color: var(--mc-pill-active-text);
+  border: 1px solid var(--mc-border);
+  font-weight: 600;
+  border-radius: 0.6rem;
+}
+
+.mc-btn-choose:hover {
+  background-color: #4A2C16;
+  color: #FFFFFF;
+}
+
+/* Señal visual inmediata al agregar un mueble */
+.mc-btn-added {
+  background-color: #15803D !important;
+  border-color: #15803D !important;
+  color: #FFFFFF !important;
+}
+
+.mc-hero {
+  background: linear-gradient(135deg, #2D1B0E 0%, #4A2C16 65%, #5C381D 100%);
+  border: 1px solid #3E2513;
+}
+
+.mc-hero-pill {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #FDE68A;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+}
+
+.mc-icon-tile {
+  width: 44px;
+  height: 44px;
+  background-color: var(--mc-pill-active-bg);
+  color: var(--mc-pill-active-text);
+  font-size: 1.2rem;
+}
+
+.mc-link-action {
+  color: var(--mc-primary);
+}
+
+.mc-thumb-box {
+  width: 78px;
+  height: 78px;
+  background-color: var(--mc-surface-soft);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mc-pill-spec {
+  background-color: #FEF3C7;
+  color: #78350F;
+  border: 1px solid #FDE68A;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.spec-box {
+  background-color: var(--mc-surface-soft);
+  border: 1px solid var(--mc-border);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.mc-theme-option {
+  background-color: var(--mc-surface-soft);
+  color: var(--mc-text);
+  border: 1.5px solid var(--mc-border);
+  font-weight: 600;
+  border-radius: 0.65rem;
+}
+
+.mc-theme-option.active {
+  background-color: var(--mc-pill-active-bg);
+  border-color: var(--mc-primary);
+  color: var(--mc-pill-active-text);
+}
+
+/* MODO ICONOS GRANDES (BAJA VISIBILIDAD) */
+body.mc-large-icons .mc-ui-icon {
+  font-size: 1.35em;
+  display: inline-block;
+  transform: scale(1.22);
+}
+
+body.mc-large-icons .mc-thumb-box svg {
+  width: 72px !important;
+  height: 72px !important;
+}
+
+body.mc-large-icons .mc-thumb-box {
+  width: 92px;
+  height: 92px;
+}
+
+body.mc-large-icons .mc-icon-tile {
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+}
+
+body.mc-large-icons .btn {
+  min-height: 48px;
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+body.mc-dark .form-control::placeholder {
+  color: #B8C2BD !important;
+  opacity: 1 !important;
+}
+
+body.mc-dark .form-control:focus,
+body.mc-dark .form-select:focus {
+  background-color: #2A322E;
+  color: #FFFFFF;
+  border-color: #E8B16D;
+  box-shadow: 0 0 0 0.25rem rgba(232, 177, 109, 0.25);
+}
+
+body.mc-dark .form-text {
+  color: #C7D0CC !important;
+}
+
+body.mc-dark code {
+  color: #FCD34D;
+}
+
+body.mc-dark .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.vista {
+  display: none;
+}
+
+.vista.activa {
+  display: block;
+}
+
+.btn, .form-control, .form-select {
+  min-height: 42px;
+}
