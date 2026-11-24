@@ -7,7 +7,7 @@ const STORAGE_ACC = DATA.slug + '_accesibilidad';
 let registro = JSON.parse(localStorage.getItem(STORAGE_VENTAS) || '[]');
 let sesionSimulada = JSON.parse(localStorage.getItem(STORAGE_SESION) || 'null');
 let usuariosSimulados = JSON.parse(localStorage.getItem(STORAGE_USUARIOS) || '[]');
-let configAcc = JSON.parse(localStorage.getItem(STORAGE_ACC) || '{"escala":100,"tema":"claro"}');
+let configAcc = JSON.parse(localStorage.getItem(STORAGE_ACC) || '{"escala":100,"tema":"claro","iconosGrandes":false}');
 
 let carrito = [];
 let productoDetalleActual = DATA.productos[0];
@@ -36,6 +36,14 @@ function aplicarAccesibilidad() {
   if (btnClaro) btnClaro.classList.toggle('active', !esOscuro);
   if (btnOscuro) btnOscuro.classList.toggle('active', esOscuro);
 
+  const iconosGrandes = Boolean(configAcc.iconosGrandes);
+  document.body.classList.toggle('mc-large-icons', iconosGrandes);
+  const btnIconos = document.getElementById('btnIconosGrandes');
+  if (btnIconos) {
+    btnIconos.classList.toggle('active', iconosGrandes);
+    btnIconos.setAttribute('aria-pressed', String(iconosGrandes));
+  }
+
   localStorage.setItem(STORAGE_ACC, JSON.stringify(configAcc));
 }
 
@@ -46,6 +54,11 @@ function cambiarTamanoTexto(delta) {
 
 function restablecerTamanoTexto() {
   configAcc.escala = 100;
+  aplicarAccesibilidad();
+}
+
+function alternarIconosGrandes() {
+  configAcc.iconosGrandes = !Boolean(configAcc.iconosGrandes);
   aplicarAccesibilidad();
 }
 
@@ -71,14 +84,11 @@ function actualizarIndicadoresGlobales() {
   const totalUnidades = carrito.reduce((s, p) => s + p.cantidad, 0);
   const badgeCarrito = document.getElementById('badgeCarrito');
   const conteoCat = document.getElementById('conteoCatalogoCarrito');
-  const txtAcceso = document.getElementById('textoMiAcceso');
 
   if (badgeCarrito) badgeCarrito.textContent = totalUnidades;
   if (conteoCat) conteoCat.textContent = totalUnidades;
 
-  const nombreUsuario = sesionSimulada ? sesionSimulada.nombre : 'Mi acceso';
-  if (txtAcceso) txtAcceso.textContent = nombreUsuario;
-
+  // Usuario visible solo en Inicio y Acceso
   const resSesion = document.getElementById('resumenInicioSesion');
   const resCarrito = document.getElementById('resumenInicioCarrito');
   const resVentas = document.getElementById('resumenInicioVentas');
@@ -133,7 +143,7 @@ function ver(id) {
   location.hash = id;
 }
 
-// --- LOGIN Y REGISTRO FUNCIONAL (SIMULADO CON PERSISTENCIA LOCAL) ---
+// --- LOGIN Y REGISTRO CON VALIDACIÓN AL SALIR (BLUR / TAB) Y ENVÍO ---
 function alternarRegistro() {
   const loginPanel = document.getElementById('login');
   const regPanel = document.getElementById('registro');
@@ -143,28 +153,59 @@ function alternarRegistro() {
 }
 
 function validarEmail(correo) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim());
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo.trim());
+}
+
+function validarCampoIndividual(campo) {
+  if (!campo) return true;
+  const val = campo.value.trim();
+  let valido = true;
+
+  if (campo.id === 'correo' || campo.id === 'regCorreo') {
+    valido = val.length > 0 && validarEmail(val);
+  } else if (campo.id === 'clave' || campo.id === 'regClave') {
+    valido = val.length >= 4;
+  } else if (campo.id === 'regClave2') {
+    const claveOrig = document.getElementById('regClave')?.value.trim() || '';
+    valido = val.length >= 4 && val === claveOrig;
+  } else if (campo.id === 'regNombre') {
+    valido = val.length >= 2;
+  }
+
+  campo.classList.toggle('is-invalid', !valido);
+  return valido;
+}
+
+function configurarValidacionEnSalida() {
+  const campos = ['correo', 'clave', 'regNombre', 'regCorreo', 'regClave', 'regClave2'];
+  campos.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('blur', () => validarCampoIndividual(el));
+    el.addEventListener('input', () => {
+      if (el.classList.contains('is-invalid')) {
+        validarCampoIndividual(el);
+      }
+    });
+  });
 }
 
 function ingresar(event) {
   if (event) event.preventDefault();
   const correoInput = document.getElementById('correo');
   const claveInput = document.getElementById('clave');
-  const correo = correoInput.value.trim().toLowerCase();
-  const clave = claveInput.value.trim();
 
-  const correoOk = validarEmail(correo);
-  const claveOk = clave.length >= 4;
-
-  correoInput.classList.toggle('is-invalid', !correoOk);
-  claveInput.classList.toggle('is-invalid', !claveOk);
+  const correoOk = validarCampoIndividual(correoInput);
+  const claveOk = validarCampoIndividual(claveInput);
 
   if (!correoOk || !claveOk) {
-    mostrarAlerta('Verifica el correo electrónico y una clave de prueba de al menos 4 caracteres.', 'danger');
+    mostrarAlerta('Revisa los campos marcados en rojo. Ejemplo de correo: <code>user@correo.com</code>.', 'danger');
     return;
   }
 
-  // Buscar si el usuario se registró previamente
+  const correo = correoInput.value.trim().toLowerCase();
+  const clave = claveInput.value.trim();
+
   const usuarioRegistrado = usuariosSimulados.find(u => u.correo.toLowerCase() === correo);
   if (usuarioRegistrado && usuarioRegistrado.clave !== clave) {
     claveInput.classList.add('is-invalid');
@@ -180,9 +221,9 @@ function ingresar(event) {
 }
 
 function ingresarDemoRapido() {
-  sesionSimulada = { nombre: 'Valeria Andrade', correo: 'valeria.demo@mueblecasa.ec' };
+  sesionSimulada = { nombre: 'Valeria Andrade', correo: 'user@correo.com' };
   localStorage.setItem(STORAGE_SESION, JSON.stringify(sesionSimulada));
-  mostrarAlerta('Acceso rápido iniciado con el perfil de prueba <strong>Valeria Andrade</strong>.', 'success');
+  mostrarAlerta('Acceso rápido iniciado con el perfil de prueba <strong>Valeria Andrade</strong> (<code>user@correo.com</code>).', 'success');
   actualizarIndicadoresGlobales();
 }
 
@@ -193,27 +234,20 @@ function guardarRegistro(event) {
   const claveInput = document.getElementById('regClave');
   const clave2Input = document.getElementById('regClave2');
 
-  const nombre = nombreInput.value.trim();
-  const correo = correoInput.value.trim().toLowerCase();
-  const clave = claveInput.value.trim();
-  const clave2 = clave2Input.value.trim();
-
-  const nombreOk = nombre.length >= 2;
-  const correoOk = validarEmail(correo);
-  const claveOk = clave.length >= 4;
-  const clave2Ok = clave2 === clave && claveOk;
-
-  nombreInput.classList.toggle('is-invalid', !nombreOk);
-  correoInput.classList.toggle('is-invalid', !correoOk);
-  claveInput.classList.toggle('is-invalid', !claveOk);
-  clave2Input.classList.toggle('is-invalid', !clave2Ok);
+  const nombreOk = validarCampoIndividual(nombreInput);
+  const correoOk = validarCampoIndividual(correoInput);
+  const claveOk = validarCampoIndividual(claveInput);
+  const clave2Ok = validarCampoIndividual(clave2Input);
 
   if (!nombreOk || !correoOk || !claveOk || !clave2Ok) {
-    mostrarAlerta('Revisa los campos marcados: nombre, correo válido y claves coincidentes.', 'danger');
+    mostrarAlerta('Completa los campos obligatorios marcados en rojo (ejemplo de correo: <code>user@correo.com</code>).', 'danger');
     return;
   }
 
-  // Guardar o actualizar cuenta simulada
+  const nombre = nombreInput.value.trim();
+  const correo = correoInput.value.trim().toLowerCase();
+  const clave = claveInput.value.trim();
+
   const idx = usuariosSimulados.findIndex(u => u.correo.toLowerCase() === correo);
   const nuevoUsuario = { nombre, correo, clave };
   if (idx >= 0) {
@@ -285,35 +319,41 @@ function dibujarCatalogo() {
   const sinRes = document.getElementById('estadoSinResultados');
   sinRes.classList.toggle('d-none', filtrados.length > 0);
 
-  document.getElementById('lista').innerHTML = filtrados.map(p => `
-    <div class="col-12 col-md-6 col-lg-4">
-      <article class="card h-100 shadow-sm mc-card">
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex align-items-start gap-3 mb-3">
-            <div class="mc-thumb-box">${p.svg || ''}</div>
-            <div class="flex-grow-1">
-              <h3 class="h5 fw-bold mb-0">${p.nombre}</h3>
-              <div class="small text-secondary mb-1">Ref. ${p.id} · ${p.categoria}</div>
-              <span class="badge rounded-pill mc-pill-spec">${p.dimensiones}</span>
+  document.getElementById('lista').innerHTML = filtrados.map(p => {
+    const enCarrito = carrito.find(item => item.id === p.id);
+    const cantActual = enCarrito ? enCarrito.cantidad : 0;
+    return `
+      <div class="col-12 col-md-6 col-lg-4">
+        <article class="card h-100 shadow-sm mc-card">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-start gap-3 mb-3">
+              <div class="mc-thumb-box">${p.svg || ''}</div>
+              <div class="flex-grow-1">
+                <h3 class="h5 fw-bold mb-0">${p.nombre}</h3>
+                <div class="small text-secondary mb-1">Ref. ${p.id} · ${p.categoria}</div>
+                <span class="badge rounded-pill mc-pill-spec">${p.dimensiones}</span>
+              </div>
+            </div>
+
+            <div class="spec-box mb-3">
+              <div><strong>Material:</strong> ${p.material}</div>
+              <div><strong>Acabado:</strong> ${p.acabado}</div>
+            </div>
+
+            <div class="mt-auto pt-2 border-top d-flex align-items-center justify-content-between gap-2">
+              <span class="h4 fw-bold mb-0">$${p.precio.toFixed(2)}</span>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="abrirDetalle('${p.id}')">Medidas</button>
+                <button type="button" id="btnElegir-${p.id}" class="btn btn-sm mc-btn-choose px-3" onclick="agregar('${p.id}', this)">
+                  ${cantActual > 0 ? `Elegir (${cantActual})` : 'Elegir'}
+                </button>
+              </div>
             </div>
           </div>
-
-          <div class="spec-box mb-3">
-            <div><strong>Material:</strong> ${p.material}</div>
-            <div><strong>Acabado:</strong> ${p.acabado}</div>
-          </div>
-
-          <div class="mt-auto pt-2 border-top d-flex align-items-center justify-content-between gap-2">
-            <span class="h4 fw-bold mb-0">$${p.precio.toFixed(2)}</span>
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="abrirDetalle('${p.id}')">Medidas</button>
-              <button type="button" class="btn btn-sm mc-btn-choose px-3" onclick="agregar('${p.id}')">Elegir</button>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-  `).join('');
+        </article>
+      </div>
+    `;
+  }).join('');
 }
 
 function abrirDetalle(idProducto) {
@@ -326,6 +366,9 @@ function abrirDetalle(idProducto) {
 function dibujarDetalle() {
   const p = productoDetalleActual;
   if (!p) return;
+  const enCarrito = carrito.find(item => item.id === p.id);
+  const cantActual = enCarrito ? enCarrito.cantidad : 0;
+
   document.getElementById('contenedorDetalle').innerHTML = `
     <div class="card-body p-4">
       <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
@@ -365,8 +408,12 @@ function dibujarDetalle() {
         <strong>Guía de espacio en el hogar:</strong> ${p.espacioRecomendado}
       </div>
 
+      <div id="feedbackDetalle" class="alert alert-success py-2 px-3 d-none mb-3" role="status"></div>
+
       <div class="d-flex flex-wrap gap-2">
-        <button type="button" class="btn mc-btn-primary" onclick="agregar('${p.id}')">Agregar al pedido</button>
+        <button type="button" id="btnDetalleAgregar" class="btn mc-btn-primary" onclick="agregar('${p.id}', this)">
+          ${cantActual > 0 ? `Agregar al pedido (${cantActual} en carrito)` : 'Agregar al pedido'}
+        </button>
         <button type="button" class="btn btn-outline-secondary" onclick="ver('venta')">Ir a venta</button>
         <button type="button" class="btn btn-outline-secondary" onclick="ver('productos')">Seguir explorando</button>
       </div>
@@ -375,7 +422,7 @@ function dibujarDetalle() {
 }
 
 // --- CARRITO Y VENTA SIMULADA ---
-function agregar(idProducto) {
+function agregar(idProducto, btnEl = null) {
   const prod = DATA.productos.find(p => p.id === idProducto);
   if (!prod) return;
 
@@ -386,8 +433,34 @@ function agregar(idProducto) {
     carrito.push({ ...prod, cantidad: 1 });
   }
 
+  const cantidadEnPedido = carrito.find(item => item.id === prod.id)?.cantidad || 1;
   actualizarIndicadoresGlobales();
-  mostrarAlerta(`Se agregó <strong>${prod.nombre}</strong> (${prod.dimensiones}) al pedido. <button type="button" class="btn btn-sm btn-dark ms-2" onclick="ver('venta')">Ir a venta</button>`, 'success');
+
+  // Señal visual en el botón pulsado
+  const botonObjetivo = btnEl || document.getElementById(`btnElegir-${prod.id}`);
+  if (botonObjetivo) {
+    const textoPrevio = botonObjetivo.textContent;
+    botonObjetivo.classList.add('mc-btn-added');
+    botonObjetivo.textContent = `✓ Agregado (${cantidadEnPedido})`;
+    setTimeout(() => {
+      botonObjetivo.classList.remove('mc-btn-added');
+      botonObjetivo.textContent = botonObjetivo.id === 'btnDetalleAgregar'
+        ? `Agregar al pedido (${cantidadEnPedido} en carrito)`
+        : `Elegir (${cantidadEnPedido})`;
+    }, 1200);
+  }
+
+  // Señal visual dentro de la vista Detalle si está abierta
+  const fbDetalle = document.getElementById('feedbackDetalle');
+  if (fbDetalle && document.getElementById('detalle')?.classList.contains('activa')) {
+    fbDetalle.innerHTML = `<strong>✓ Agregado al pedido:</strong> ${prod.nombre} (${cantidadEnPedido} unidad(es) en carrito).`;
+    fbDetalle.classList.remove('d-none');
+  }
+
+  mostrarAlerta(
+    `<strong>✓ Agregado al carrito:</strong> ${prod.nombre} (${prod.dimensiones}) · Total en pedido: <strong>${carrito.reduce((s, x) => s + x.cantidad, 0)}</strong>. <button type="button" class="btn btn-sm btn-dark ms-2" onclick="ver('venta')">Ir a venta</button>`,
+    'success'
+  );
 }
 
 function cambiarCantidad(index, valorRaw) {
@@ -584,6 +657,7 @@ window.addEventListener('hashchange', () => {
   }
 });
 
+configurarValidacionEnSalida();
 aplicarAccesibilidad();
 inicializarFiltros();
-ver(location.hash.replace('#', '') || 'inicio');
+ver(location.hash.replace('#', '') || 'inicio');') || 'inicio');
